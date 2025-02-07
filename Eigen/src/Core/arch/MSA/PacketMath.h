@@ -13,9 +13,11 @@
 #ifndef EIGEN_PACKET_MATH_MSA_H
 #define EIGEN_PACKET_MATH_MSA_H
 
+#ifndef EIGEN_USE_MODULE
 #include <iostream>
 #include <string>
 
+#endif // EIGEN_USE_MODULE
 // IWYU pragma: private
 #include "../../InternalHeaderCheck.h"
 

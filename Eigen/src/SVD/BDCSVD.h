@@ -31,7 +31,9 @@
 #include "./InternalHeaderCheck.h"
 
 #ifdef EIGEN_BDCSVD_DEBUG_VERBOSE
+#ifndef EIGEN_USE_MODULE
 #include <iostream>
+#endif // EIGEN_USE_MODULE
 #endif
 
 namespace Eigen {

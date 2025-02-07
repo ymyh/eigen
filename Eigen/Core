@@ -30,7 +30,9 @@
 #endif
 
 #ifdef EIGEN_EXCEPTIONS
+#ifndef EIGEN_USE_MODULE
 #include <new>
+#endif // EIGEN_USE_MODULE
 #endif
 
 // Disable the ipa-cp-clone optimization flag with MinGW 6.x or older (enabled by default with -O3)
@@ -45,8 +47,10 @@
 #if EIGEN_COMP_ICC && defined(EIGEN_GPU_COMPILE_PHASE) && !defined(_OVERRIDE_COMPLEX_SPECIALIZATION_)
 #define _OVERRIDE_COMPLEX_SPECIALIZATION_ 1
 #endif
+#ifndef EIGEN_USE_MODULE
 #include <complex>
 
+#endif // EIGEN_USE_MODULE
 // this include file manages BLAS and MKL related macros
 // and inclusion of their respective header files
 #include "src/Core/util/MKL_support.h"
@@ -64,7 +68,9 @@
 #endif
 
 #ifdef EIGEN_HAS_OPENMP
+#ifndef EIGEN_USE_MODULE
 #include <atomic>
+#endif // EIGEN_USE_MODULE
 #include <omp.h>
 #endif
 
@@ -74,43 +80,60 @@
 #endif
 
 #ifdef EIGEN_HAS_ERRNO
+#ifndef EIGEN_USE_MODULE
 #include <cerrno>
+#endif // EIGEN_USE_MODULE
 #endif
+#ifndef EIGEN_USE_MODULE
 #include <cstddef>
 #include <cstdlib>
 #include <cmath>
 #include <functional>
+#endif // EIGEN_USE_MODULE
 #ifndef EIGEN_NO_IO
+#ifndef EIGEN_USE_MODULE
 #include <sstream>
 #include <iosfwd>
+#endif // EIGEN_USE_MODULE
 #endif
+#ifndef EIGEN_USE_MODULE
 #include <cstring>
 #include <string>
 #include <limits>
 #include <climits>  // for CHAR_BIT
+#endif // EIGEN_USE_MODULE
 // for min/max:
+#ifndef EIGEN_USE_MODULE
 #include <algorithm>
 
 #include <array>
 #include <vector>
 
+#endif // EIGEN_USE_MODULE
 // for std::is_nothrow_move_assignable
+#ifndef EIGEN_USE_MODULE
 #include <type_traits>
 
+#endif // EIGEN_USE_MODULE
 // for std::this_thread::yield().
 #if !defined(EIGEN_USE_BLAS) && (defined(EIGEN_HAS_OPENMP) || defined(EIGEN_GEMM_THREADPOOL))
+#ifndef EIGEN_USE_MODULE
 #include <thread>
+#endif // EIGEN_USE_MODULE
 #endif
 
 // for outputting debug info
 #ifdef EIGEN_DEBUG_ASSIGN
+#ifndef EIGEN_USE_MODULE
 #include <iostream>
+#endif // EIGEN_USE_MODULE
 #endif
 
 // required for __cpuid, needs to be included after cmath
 // also required for _BitScanReverse on Windows on ARM
 #if EIGEN_COMP_MSVC && (EIGEN_ARCH_i386_OR_x86_64 || EIGEN_ARCH_ARM64) && !EIGEN_OS_WINCE
-#include <intrin.h>
+// FIXME: modularized
+// #include <intrin.h>
 #endif
 
 #if defined(EIGEN_USE_SYCL)
@@ -120,10 +143,12 @@
 #undef isinf
 #undef isfinite
 #include <CL/sycl.hpp>
+#ifndef EIGEN_USE_MODULE
 #include <map>
 #include <memory>
 #include <thread>
 #include <utility>
+#endif // EIGEN_USE_MODULE
 #ifndef EIGEN_SYCL_LOCAL_THREAD_DIM0
 #define EIGEN_SYCL_LOCAL_THREAD_DIM0 16
 #endif

@@ -12,6 +12,7 @@
 
 #include "src/Core/util/DisableStupidWarnings.h"
 
+#ifndef EIGEN_USE_MODULE
 #include <vector>
 #include <map>
 #include <cstdlib>
@@ -19,6 +20,7 @@
 #include <algorithm>
 #include <numeric>
 
+#endif // EIGEN_USE_MODULE
 /**
  * \defgroup SparseCore_Module SparseCore module
  *

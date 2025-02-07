@@ -16,8 +16,10 @@
 
 #if defined(EIGEN_GPU_COMPILE_PHASE)
 
+#ifndef EIGEN_USE_MODULE
 #include <cfloat>
 
+#endif // EIGEN_USE_MODULE
 #if defined(EIGEN_CUDA_ARCH)
 #include <math_constants.h>
 #endif
@@ -29,8 +31,10 @@
 #endif
 
 // Define portable (u)int{32,64} types
+#ifndef EIGEN_USE_MODULE
 #include <cstdint>
 
+#endif // EIGEN_USE_MODULE
 namespace Eigen {
 namespace numext {
 typedef std::uint8_t uint8_t;

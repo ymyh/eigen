@@ -13,8 +13,10 @@
 #ifndef EIGEN_COMPLEX_MSA_H
 #define EIGEN_COMPLEX_MSA_H
 
+#ifndef EIGEN_USE_MODULE
 #include <iostream>
 
+#endif // EIGEN_USE_MODULE
 // IWYU pragma: private
 #include "../../InternalHeaderCheck.h"
 

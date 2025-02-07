@@ -11,9 +11,11 @@
 #ifndef EIGEN_INCOMPLETE_CHOlESKY_H
 #define EIGEN_INCOMPLETE_CHOlESKY_H
 
+#ifndef EIGEN_USE_MODULE
 #include <vector>
 #include <list>
 
+#endif // EIGEN_USE_MODULE
 // IWYU pragma: private
 #include "./InternalHeaderCheck.h"
 

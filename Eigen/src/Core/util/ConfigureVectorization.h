@@ -44,7 +44,9 @@
 // still does not exist.
 #if defined(__cpp_lib_hardware_interference_size) && __cpp_lib_hardware_interference_size >= 201603 && \
     (!EIGEN_OS_ANDROID || __NDK_MAJOR__ + 0 >= 26)
+#ifndef EIGEN_USE_MODULE
 #include <new>
+#endif // EIGEN_USE_MODULE
 #define EIGEN_ALIGN_TO_AVOID_FALSE_SHARING EIGEN_ALIGN_TO_BOUNDARY(std::hardware_destructive_interference_size)
 #else
 // Overalign for the cache line size of 128 bytes (Apple M1)
@@ -189,7 +191,8 @@
 // The following (except #include <malloc.h> and _M_IX86_FP ??) can likely be
 // removed as gcc 4.1 and msvc 2008 are not supported anyways.
 #if EIGEN_COMP_MSVC
-#include <malloc.h>  // for _aligned_malloc -- need it regardless of whether vectorization is enabled
+// FIXME: modularized
+// #include <malloc.h>  // for _aligned_malloc -- need it regardless of whether vectorization is enabled
 // a user reported that in 64-bit mode, MSVC doesn't care to define _M_IX86_FP.
 #if (defined(_M_IX86_FP) && (_M_IX86_FP >= 2)) || EIGEN_ARCH_x86_64
 #define EIGEN_SSE2_ON_MSVC_2008_OR_LATER
@@ -331,7 +334,7 @@
 #endif
 
 // include files
-
+// FIXME: modularized
 // This extern "C" works around a MINGW-w64 compilation issue
 // https://sourceforge.net/tracker/index.php?func=detail&aid=3018394&group_id=202880&atid=983354
 // In essence, intrin.h is included by windows.h and also declares intrinsics (just as emmintrin.h etc. below do).
@@ -339,32 +342,32 @@
 // with conflicting linkage.  The linkage for intrinsics doesn't matter, but at that stage the compiler doesn't know;
 // so, to avoid compile errors when windows.h is included after Eigen/Core, ensure intrinsics are extern "C" here too.
 // notice that since these are C headers, the extern "C" is theoretically needed anyways.
-extern "C" {
-// In theory we should only include immintrin.h and not the other *mmintrin.h header files directly.
-// Doing so triggers some issues with ICC. However old gcc versions seems to not have this file, thus:
-#if EIGEN_COMP_ICC >= 1110 || EIGEN_COMP_EMSCRIPTEN
-#include <immintrin.h>
-#else
-#include <mmintrin.h>
-#include <emmintrin.h>
-#include <xmmintrin.h>
-#ifdef EIGEN_VECTORIZE_SSE3
-#include <pmmintrin.h>
-#endif
-#ifdef EIGEN_VECTORIZE_SSSE3
-#include <tmmintrin.h>
-#endif
-#ifdef EIGEN_VECTORIZE_SSE4_1
-#include <smmintrin.h>
-#endif
-#ifdef EIGEN_VECTORIZE_SSE4_2
-#include <nmmintrin.h>
-#endif
-#if defined(EIGEN_VECTORIZE_AVX) || defined(EIGEN_VECTORIZE_AVX512)
-#include <immintrin.h>
-#endif
-#endif
-}  // end extern "C"
+// extern "C" {
+// // In theory we should only include immintrin.h and not the other *mmintrin.h header files directly.
+// // Doing so triggers some issues with ICC. However old gcc versions seems to not have this file, thus:
+// #if EIGEN_COMP_ICC >= 1110 || EIGEN_COMP_EMSCRIPTEN
+// #include <immintrin.h>
+// #else
+// #include <mmintrin.h>
+// #include <emmintrin.h>
+// #include <xmmintrin.h>
+// #ifdef EIGEN_VECTORIZE_SSE3
+// #include <pmmintrin.h>
+// #endif
+// #ifdef EIGEN_VECTORIZE_SSSE3
+// #include <tmmintrin.h>
+// #endif
+// #ifdef EIGEN_VECTORIZE_SSE4_1
+// #include <smmintrin.h>
+// #endif
+// #ifdef EIGEN_VECTORIZE_SSE4_2
+// #include <nmmintrin.h>
+// #endif
+// #if defined(EIGEN_VECTORIZE_AVX) || defined(EIGEN_VECTORIZE_AVX512)
+// #include <immintrin.h>
+// #endif
+// #endif
+// }  // end extern "C"
 
 #elif defined(__VSX__) && !defined(__APPLE__)
 

@@ -10,9 +10,11 @@
 #ifndef EIGEN_TUPLE_GPU
 #define EIGEN_TUPLE_GPU
 
+#ifndef EIGEN_USE_MODULE
 #include <type_traits>
 #include <utility>
 
+#endif // EIGEN_USE_MODULE
 // This is a replacement of std::tuple that can be used in device code.
 
 namespace Eigen {

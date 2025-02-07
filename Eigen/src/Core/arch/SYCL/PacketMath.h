@@ -20,8 +20,10 @@
 
 #ifndef EIGEN_PACKET_MATH_SYCL_H
 #define EIGEN_PACKET_MATH_SYCL_H
+#ifndef EIGEN_USE_MODULE
 #include <type_traits>
 
+#endif // EIGEN_USE_MODULE
 // IWYU pragma: private
 #include "../../InternalHeaderCheck.h"
 

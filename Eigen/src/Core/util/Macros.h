@@ -11,7 +11,9 @@
 #ifndef EIGEN_MACROS_H
 #define EIGEN_MACROS_H
 // IWYU pragma: private
+#ifndef EIGEN_USE_MODULE
 #include "../InternalHeaderCheck.h"
+#endif
 
 //------------------------------------------------------------------------------------------
 // Eigen version and basic defaults
@@ -735,7 +737,9 @@
 
 // Does the compiler support C99?
 // Need to include <cmath> to make sure _GLIBCXX_USE_C99 gets defined
+#ifndef EIGEN_USE_MODULE
 #include <cmath>
+#endif // EIGEN_USE_MODULE
 #ifndef EIGEN_HAS_C99_MATH
 #if ((defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901)) ||                                          \
      (defined(__GNUC__) && defined(_GLIBCXX_USE_C99)) || (defined(_LIBCPP_VERSION) && !defined(_MSC_VER)) || \

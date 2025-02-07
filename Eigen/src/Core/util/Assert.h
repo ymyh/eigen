@@ -29,8 +29,10 @@
 //  - gpu debugging is enabled.
 #if !defined(EIGEN_NO_DEBUG) && (!defined(EIGEN_GPU_COMPILE_PHASE) || !defined(EIGEN_NO_DEBUG_GPU))
 
+#ifndef EIGEN_USE_MODULE
 #include <cassert>
 
+#endif // EIGEN_USE_MODULE
 #ifndef EIGEN_USE_CUSTOM_PLAIN_ASSERT
 // Disable new custom asserts by default for now.
 #define EIGEN_USE_CUSTOM_PLAIN_ASSERT 0

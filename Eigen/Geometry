@@ -12,8 +12,10 @@
 
 #include "SVD"
 #include "LU"
+#ifndef EIGEN_USE_MODULE
 #include <limits>
 
+#endif // EIGEN_USE_MODULE
 #include "src/Core/util/DisableStupidWarnings.h"
 
 /** \defgroup Geometry_Module Geometry module

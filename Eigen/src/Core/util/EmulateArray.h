@@ -223,8 +223,10 @@ struct array_size<const array<T, N>&> {
 #else
 
 // The compiler supports c++11, and we're not targeting cuda: use std::array as Eigen::array
+#ifndef EIGEN_USE_MODULE
 #include <array>
 
+#endif // EIGEN_USE_MODULE
 namespace Eigen {
 
 template <typename T, std::size_t N>

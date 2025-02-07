@@ -10,7 +10,9 @@
 #ifndef EIGEN_PACKET_MATH_SSE_H
 #define EIGEN_PACKET_MATH_SSE_H
 
+#ifndef EIGEN_USE_MODULE
 #include <cstdint>
+#endif // EIGEN_USE_MODULE
 // IWYU pragma: private
 #include "../../InternalHeaderCheck.h"
 

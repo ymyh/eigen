@@ -16,8 +16,10 @@
 #include <x86intrin.h>
 #endif
 #include <immintrin.h>
+#ifndef EIGEN_USE_MODULE
 #include <type_traits>
 
+#endif // EIGEN_USE_MODULE
 // IWYU pragma: private
 #include "../../InternalHeaderCheck.h"
 
