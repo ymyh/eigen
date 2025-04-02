@@ -182,6 +182,10 @@ struct imag_ref_retval {
   typedef typename NumTraits<Scalar>::Real& type;
 };
 
+// implementation in MathFunctionsImpl.h
+template <typename Mask, bool is_built_in_float = std::is_floating_point<Mask>::value>
+struct scalar_select_mask;
+
 }  // namespace internal
 
 namespace numext {
@@ -205,6 +209,11 @@ EIGEN_DEVICE_FUNC inline EIGEN_MATHFUNC_RETVAL(real_ref, Scalar) real_ref(Scalar
 template <typename Scalar>
 EIGEN_DEVICE_FUNC inline EIGEN_MATHFUNC_RETVAL(imag, Scalar) imag(const Scalar& x) {
   return EIGEN_MATHFUNC_IMPL(imag, Scalar)::run(x);
+}
+
+template <typename Scalar, typename Mask>
+EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE Scalar select(const Mask& mask, const Scalar& a, const Scalar& b) {
+  return internal::scalar_select_mask<Mask>::run(mask) ? b : a;
 }
 
 }  // namespace numext
@@ -935,6 +944,38 @@ struct nearest_integer_impl<Scalar, true> {
   static EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE Scalar run_round(const Scalar& x) { return x; }
   static EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE Scalar run_trunc(const Scalar& x) { return x; }
 };
+
+// Default implementation.
+template <typename Scalar, typename Enable = void>
+struct fma_impl {
+  static EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE Scalar run(const Scalar& a, const Scalar& b, const Scalar& c) {
+    return a * b + c;
+  }
+};
+
+// ADL version if it exists.
+template <typename T>
+struct fma_impl<
+    T,
+    std::enable_if_t<std::is_same<T, decltype(fma(std::declval<T>(), std::declval<T>(), std::declval<T>()))>::value>> {
+  static T run(const T& a, const T& b, const T& c) { return fma(a, b, c); }
+};
+
+#if defined(EIGEN_GPUCC)
+template <>
+struct fma_impl<float, void> {
+  static EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE float run(const float& a, const float& b, const float& c) {
+    return ::fmaf(a, b, c);
+  }
+};
+
+template <>
+struct fma_impl<double, void> {
+  static EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE double run(const double& a, const double& b, const double& c) {
+    return ::fma(a, b, c);
+  }
+};
+#endif
 
 }  // end namespace internal
 
@@ -1841,6 +1882,15 @@ template <typename Scalar, typename Enable = std::enable_if_t<std::is_integral<S
 EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE Scalar arithmetic_shift_right(const Scalar& a, int n) {
   using SignedScalar = typename numext::get_integer_by_size<sizeof(Scalar)>::signed_type;
   return bit_cast<Scalar, SignedScalar>(bit_cast<SignedScalar, Scalar>(a) >> n);
+}
+
+// Use std::fma if available.
+using std::fma;
+
+// Otherwise, rely on template implementation.
+template <typename Scalar>
+EIGEN_DEVICE_FUNC EIGEN_STRONG_INLINE Scalar fma(const Scalar& x, const Scalar& y, const Scalar& z) {
+  return internal::fma_impl<Scalar>::run(x, y, z);
 }
 
 }  // end namespace numext
